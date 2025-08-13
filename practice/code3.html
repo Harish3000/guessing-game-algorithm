@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Number Guess V3</title>
+  </head>
+  <body>
+    <h2>Guess the number 🙂</h2>
+    <input type="text" id="userInput" maxlength="1" autocomplete="off" />
+    <button id="submitBtn">GUESS</button>
+    <p id="output"></p>
+
+    <!--------------------------------------ALGORITHM----------------------------------------->
+    <script>
+      // REFERENCES
+      const input = document.getElementById("userInput");
+      const button = document.getElementById("submitBtn");
+      const output = document.getElementById("output");
+
+      //SAVE RANDOM GENERATED ALPHABET
+      localStorage.removeItem("targetInt");
+      let targetInt = Math.floor(Math.random() * 26) + 1;
+      localStorage.setItem("targetInt", targetInt);
+
+      //LOGGING FOR DEBUG
+      let target = (targetInt + 9).toString(36);
+      console.log("TARGET : ", target);
+
+      // CLICK AND GUESS
+      button.addEventListener("click", () => {
+        let guessInt = parseInt(input.value, 36) - 9;
+
+        let distance = Math.abs(targetInt - guessInt);
+        console.log(" ----- distance : ", distance, " ----- \n");
+
+        if (distance == 0) {
+          (output.textContent = ` BINGO !! That is the Letter i guessed ------- ${target} `),
+            target;
+        } else if (distance <= 4) {
+          output.textContent = "hot🔥";
+        } else if (distance <= 8) {
+          output.textContent = "warm🌞";
+        } else if (distance <= 13) {
+          output.textContent = "cool❄️";
+        } else {
+          output.textContent = `ice🧊`;
+        }
+
+        //CLEAR LOCALSTORAGE ON EXIT
+        localStorage.removeItem("targetInt");
+      });
+    </script>
+  </body>
+</html>

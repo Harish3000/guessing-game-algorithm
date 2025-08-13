@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Letter Guess V1</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      input {
+        text-align: center;
+        font-size: 1.2em;
+        width: 50px;
+      }
+      button {
+        font-size: 1.2em;
+      }
+      p {
+        font-size: 1.5em;
+        font-weight: bold;
+        min-height: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>I'm thinking of a letter from A to Z...</h2>
+    <input type="text" id="userInput" maxlength="1" autocomplete="off" />
+    <button id="submitBtn">GUESS</button>
+    <p id="output"></p>
+
+    <!--------------------------------------ALGORITHM----------------------------------------->
+    <script>
+      // --- REFERENCES ---
+      const input = document.getElementById("userInput");
+      const button = document.getElementById("submitBtn");
+      const output = document.getElementById("output");
+
+      // --- GAME SETUP ---
+      // An array of all possible letters is clearer than complex math.
+      const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+      // Generate the target letter only once when the page loads.
+      const targetLetter =
+        alphabet[Math.floor(Math.random() * alphabet.length)];
+
+      // We can get the "number" (index) of the letter for calculating distance.
+      const targetIndex = alphabet.indexOf(targetLetter);
+
+      // For debugging: Let's see the answer in the console.
+      console.log("TARGET:", targetLetter);
+
+      // --- GAME LOGIC ---
+      function handleGuess() {
+        // Get the user's guess and make it lowercase for easy comparison.
+        const userGuess = input.value.toLowerCase();
+
+        // 1. VALIDATION: Check if the input is a single letter.
+        if (!userGuess || !alphabet.includes(userGuess)) {
+          output.textContent = "Please enter a single letter.";
+          return; // Stop the function here if input is invalid
+        }
+
+        // 2. CALCULATE DISTANCE: Find the difference in alphabet position.
+        const guessIndex = alphabet.indexOf(userGuess);
+        const distance = Math.abs(targetIndex - guessIndex);
+
+        // 3. PROVIDE FEEDBACK
+        if (distance === 0) {
+          output.textContent = `BINGO! 🎉 It was "${targetLetter.toUpperCase()}"!`;
+          // Disable input and button after winning.
+          input.disabled = true;
+          button.disabled = true;
+        } else if (distance <= 2) {
+          output.textContent = "Burning hot! 🔥";
+        } else if (distance <= 5) {
+          output.textContent = "Warm ☀️";
+        } else if (distance <= 10) {
+          output.textContent = "Cool ❄️";
+        } else {
+          output.textContent = "Ice cold 🧊";
+        }
+
+        // 4. CLEAR INPUT: For a better user experience.
+        input.value = "";
+      }
+
+      // --- EVENT LISTENERS ---
+
+      // Guess when the button is clicked.
+      button.addEventListener("click", handleGuess);
+
+      // Also allow the user to press "Enter" to guess.
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          handleGuess();
+        }
+      });
+
+      // Place the cursor in the input box automatically when the page loads.
+      input.focus();
+    </script>
+  </body>
+</html>

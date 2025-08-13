@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Number Guess V2</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      #output {
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Guess the number:</h2>
+    <input type="text" id="userInput" placeholder="Type here" />
+    <button id="submitBtn">GUESS</button>
+
+    <p id="output"></p>
+
+    <script>
+      // REFERENCES
+      const input = document.getElementById("userInput");
+      const button = document.getElementById("submitBtn");
+      const output = document.getElementById("output");
+
+      //GUESS SAVED
+      localStorage.removeItem("targetInt");
+      let targetInt = Math.floor(Math.random() * 26) + 1;
+      let target = (targetInt + 9).toString(36);
+      console.log("TARGET : ", target);
+      console.log("TARGET INT : ", targetInt);
+      localStorage.setItem("targetInt", targetInt);
+
+      // CLICK
+      button.addEventListener("click", () => {
+        const value = input.value;
+        if (value.trim() === "") {
+          output.textContent = "Please enter something!";
+        } else {
+          let guessInt = parseInt(input.value, 36) - 9;
+          console.log(
+            "Guessed LETTER: ",
+            input.value,
+            "\nGuessed INT : ",
+            guessInt
+          );
+
+          let distance = Math.abs(targetInt - guessInt);
+          console.log(" ----- distance : ", distance, " ----- \n");
+
+          let negDistance = 26 - distance;
+          if (negDistance > distance) {
+            let hot = negDistance / 4;
+            let warm = negDistance / 3;
+            let cool = negDistance / 2;
+            let ice = negDistance;
+          } else {
+            let hot = distance / 4;
+            let warm = distance / 3;
+            let cool = distance / 2;
+            let ice = distance;
+          }
+
+          if (distance == 0) {
+            console.log(" ** BINGO !! **");
+            output.textContent = " ** BINGO !! **";
+          } else if (distance >= hot && distance < warm) {
+            console.log("hot");
+            output.textContent = "hot";
+          } else if (distance >= warm && distance < cool) {
+            console.log("warm");
+            output.textContent = "warm";
+          } else if (distance >= cool && distance < ice) {
+            console.log("cool");
+            output.textContent = "cool";
+          } else {
+            console.log("ice");
+            output.textContent = `ice`;
+          }
+
+          localStorage.removeItem("targetInt");
+        }
+      });
+    </script>
+  </body>
+</html>

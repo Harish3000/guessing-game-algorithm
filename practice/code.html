@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Number Guess V1</title>
+  </head>
+  <body>
+    <h2>Guess the number 😁</h2>
+    <input type="text" id="userInput" onfocus="this.value=''" maxlength="1" />
+    <button id="submitBtn">GUESS</button>
+    <p id="output"></p>
+
+    <!--------------------------------------ALGORITHM----------------------------------------->
+    <script>
+      // REFERENCES
+      const input = document.getElementById("userInput");
+      const button = document.getElementById("submitBtn");
+      const output = document.getElementById("output");
+
+      //SAVE RANDOM GENERATED ALPHABET
+      localStorage.removeItem("targetInt");
+      let targetInt = Math.floor(Math.random() * 26) + 1;
+      localStorage.setItem("targetInt", targetInt);
+
+      //LOGGING FOR DEBUG
+      let target = (targetInt + 9).toString(36);
+      console.log("TARGET : ", target);
+      console.log("TARGET INT : ", targetInt);
+
+      // CLICK AND GUESS
+      button.addEventListener("click", () => {
+        const value = input.value;
+        if (value.trim() === "") {
+          output.textContent = "Please enter something!";
+        } else {
+          let guessInt = parseInt(input.value, 36) - 9;
+          console.log(
+            "Guessed LETTER: ",
+            input.value,
+            "\nGuessed INT : ",
+            guessInt
+          );
+
+          let distance = Math.abs(targetInt - guessInt);
+          console.log(" ----- distance : ", distance, " ----- \n");
+
+          if (distance == 0) {
+            console.log(
+              " BINGO !! \n \nThat is the Letter i guessed :   ${target}"
+            );
+            (output.textContent = ` BINGO !! That is the Letter i guessed ---> ${target} `),
+              target;
+          } else if (distance >= 1 && distance <= 6) {
+            console.log("hot");
+            output.textContent = "hot";
+          } else if (distance >= 7 && distance <= 12) {
+            console.log("warm");
+            output.textContent = "warm";
+          } else if (distance >= 13 && distance <= 18) {
+            console.log("cool");
+            output.textContent = "cool";
+          } else {
+            console.log("ice");
+            output.textContent = `ice`;
+          }
+
+          localStorage.removeItem("targetInt");
+        }
+      });
+    </script>
+  </body>
+</html>
