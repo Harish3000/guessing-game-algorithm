@@ -42,7 +42,7 @@ function handleGuess() {
     resetBtn.style.display = "inline-block";
   } else if (distance <= 3) {
     output.textContent = "Hot 🔥";
-  } else if (distance <= 6) {
+  } else if (distance <= 7) {
     output.textContent = "Warm ☀️";
   } else if (distance <= 13) {
     output.textContent = "Cool ❄️";
